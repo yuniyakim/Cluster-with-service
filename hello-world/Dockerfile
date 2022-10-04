@@ -1,6 +1,6 @@
 FROM node:16
 
-WORKDIR /web-service
+WORKDIR /hello-world
 
 COPY package*.json ./
 

@@ -1,7 +1,7 @@
 {
-  "name": "web-service",
+  "name": "hello-world",
   "version": "1.0.0",
-  "description": "Web service for test cluster",
+  "description": "Hello world web service for test cluster",
   "scripts": {
 	"start": "node app.js"
   },
