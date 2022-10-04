@@ -1,0 +1,114 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello-world-deployment
+  labels:
+    app: hello-world
+spec:
+  selector:
+    matchLabels:
+      app: hello-world
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: hello-world
+    spec:
+      containers:
+      - name: hello-world
+        image: yuniyakim/cluster-with-service:hello-world
+        ports:
+        - containerPort: 8080
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bye-world-deployment
+  labels:
+    app: bye-world
+spec:
+  selector:
+    matchLabels:
+      app: bye-world
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: bye-world
+    spec:
+      containers:
+      - name: bye-world
+        image: yuniyakim/cluster-with-service:bye-world
+        ports:
+        - containerPort: 8080
+
+--- 
+ 
+apiVersion: v1
+kind: Service
+metadata:
+  name: hello-world-service
+spec:
+  ports:
+  - port: 80
+    targetPort: 8080
+  type: ClusterIP
+  selector:
+    app: hello-world
+
+--- 
+ 
+apiVersion: v1
+kind: Service
+metadata:
+  name: bye-world-service
+spec:
+  ports:
+  - port: 80
+    targetPort: 8080
+  type: ClusterIP
+  selector:
+    app: bye-world
+    
+---
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: hello-world-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$1
+spec:
+  rules:
+    - host: hello-world.com
+      http:
+        paths:
+          - path: /?(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: hello-world-service
+                port:
+                  number: 8080    
+---
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: bye-world-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$1
+spec:
+  rules:
+    - host: bye-world.com
+      http:
+        paths:
+          - path: /?(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: bye-world-service
+                port:
+                  number: 8080
