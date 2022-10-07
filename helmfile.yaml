@@ -1,0 +1,9 @@
+releases:
+- name: prometheus
+  namespace: monitoring
+  chart: prometheus-community/prometheus
+- name: grafana
+  namespace: monitoring
+  chart: grafana/grafana
+  values:
+  - grafana.yaml
