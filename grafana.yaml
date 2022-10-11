@@ -4,6 +4,7 @@ datasources:
     datasources:
       -  name: Prometheus
          type: prometheus
-         url: http://10.99.121.57
+         # ClusterIP of prometheus-server (can be retrieved via 'kubectl get svc -n monitoring')
+         url: http://10.110.210.192
          access: proxy
          isDefault: true

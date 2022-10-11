@@ -1,0 +1,36 @@
+alertmanager:
+  enabled: false
+
+kubeStateMetrics:
+  enabled: false
+
+nodeExporter:
+  enabled: false
+
+pushgateway:
+  enabled: false
+
+serverFiles:
+  alerts: {}
+  rules: {}
+
+  prometheus.yml:
+    scrape_configs:
+      - job_name: prometheus
+        static_configs:
+          - targets:
+            - localhost:9090
+      - job_name: hello-world
+        metrics_path: /metrics
+        scheme: http
+        scrape_interval: 5s
+        static_configs:
+          - targets:
+            - hello-world.com
+      - job_name: bye-world
+        metrics_path: /metrics
+        scheme: http
+        scrape_interval: 5s
+        static_configs:
+          - targets:
+            - bye-world.com
